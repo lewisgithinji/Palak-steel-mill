@@ -1,0 +1,15 @@
+{
+    "name": "@palak/styles",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Shared design system and CSS for The Palak Group websites",
+    "main": "src/index.css",
+    "files": [
+        "src/**/*.css"
+    ],
+    "keywords": [
+        "css",
+        "design-system",
+        "palak"
+    ]
+}
