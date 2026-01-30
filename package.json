@@ -10,11 +10,9 @@
         "preview": "vite preview",
         "clean": "rm -rf dist"
     },
-    "devDependencies": {
-        "vite": "^6.0.0"
-    },
     "dependencies": {
         "@palak/styles": "file:./packages/styles",
-        "@palak/ui": "file:./packages/ui"
+        "@palak/ui": "file:./packages/ui",
+        "vite": "^6.0.0"
     }
 }
