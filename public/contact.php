@@ -14,8 +14,14 @@
 declare(strict_types=1);
 
 const RECIPIENT    = 'info@psml.ke';
-// Must be ON this domain or receiving servers will treat it as spoofed.
-const MAIL_FROM    = 'website@psml.ke';
+// Sender identity. This is also passed as the envelope sender (-f), and shared
+// hosts generally only accept an envelope sender that is a REAL mailbox on the
+// account - otherwise mail() fails outright or the message is scored as spam.
+// info@psml.ke is known to exist, so it is the safe default. If you would rather
+// enquiries came from a dedicated address, create website@psml.ke as a mailbox
+// or forwarder in DirectAdmin FIRST, then change this line.
+// Replies are unaffected either way: Reply-To is set to the enquirer below.
+const MAIL_FROM    = 'info@psml.ke';
 const SUBJECT      = 'New enquiry from psml.ke';
 const MIN_SECONDS  = 3;     // faster than this and it is almost certainly a bot
 const MAX_MESSAGE  = 5000;
@@ -38,8 +44,9 @@ function respond(bool $ok, string $message, int $status = 200)
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['success' => $ok, 'message' => $message]);
     } else {
-        // No-JS fallback: bounce back to the form with a flag in the query string.
-        http_response_code($ok ? 303 : 303);
+        // No-JS fallback: bounce back to the form with a flag in the query
+        // string. 303 in both cases so a refresh cannot resubmit the POST.
+        http_response_code(303);
         header('Location: /contact.html?sent=' . ($ok ? '1' : '0'));
     }
     exit;
