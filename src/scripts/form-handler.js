@@ -7,7 +7,11 @@
 // cannot run a handler of our own - submissions go to Web3Forms. The endpoint
 // and access key live on the <form> itself (action + a hidden input) so the
 // no-JS path keeps working and there is a single place to edit the key.
-const PLACEHOLDER_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+// The key is injected at build time from VITE_WEB3FORMS_KEY. If that variable is
+// missing, Vite leaves the token untouched, so treat the raw token as "unset"
+// too - otherwise a misconfigured deploy posts the literal string and the only
+// clue is a 403 from the API.
+const UNSET_KEYS = ['%VITE_WEB3FORMS_KEY%', 'YOUR_WEB3FORMS_ACCESS_KEY', ''];
 
 /**
  * Initialize all forms on the page
@@ -59,9 +63,9 @@ function setupFormSubmission(form) {
         // Fail loudly in the console rather than sending a request that is
         // guaranteed to come back rejected.
         const keyField = form.querySelector('input[name="access_key"]');
-        if (!keyField || !keyField.value || keyField.value === PLACEHOLDER_KEY) {
+        if (!keyField || UNSET_KEYS.includes(keyField.value.trim())) {
             showStatus(statusDiv, 'Sorry, the form is unavailable right now. Please call +254 716 923 777 or email info@psml.ke.', 'error');
-            console.error('Contact form: Web3Forms access key is not set in contact.html.');
+            console.error('Contact form: VITE_WEB3FORMS_KEY was not set at build time, so no access key was injected.');
             return;
         }
 

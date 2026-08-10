@@ -103,11 +103,14 @@
                          The site is on Cloudflare Pages, which serves static files
                          only and cannot run a server-side handler of our own. -->
                     <form id="contact-form" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
-                        <!-- REPLACE THIS with the access key emailed by web3forms.com
-                             for info@psml.ke. The form cannot send until you do.
-                             A public key is expected here - it only permits
-                             submissions to this one form. -->
-                        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+                        <!-- Substituted by Vite at build time from the environment
+                             variable VITE_WEB3FORMS_KEY, set in Cloudflare Pages ->
+                             Settings -> Environment variables (and in a local .env
+                             for development). Keeps the key out of the repo.
+                             Note it is still readable in the built page - a
+                             Web3Forms key is public by design and only permits
+                             submissions to this one form, so that is expected. -->
+                        <input type="hidden" name="access_key" value="%VITE_WEB3FORMS_KEY%">
                         <input type="hidden" name="subject" value="New enquiry from psml.ke">
                         <input type="hidden" name="from_name" value="Palak Steel Mill Website">
                         <!-- Only used for no-JS submissions; form-handler.js strips
