@@ -3,10 +3,11 @@
  * Handles contact form submissions with validation and Web3Forms integration
  */
 
-// Posts to our own PHP handler (public/contact.php) rather than a third-party
-// form service: the site runs on PHP and info@psml.ke is a mailbox on the same
-// server, so there is no submission cap and no public API key to leak.
-const ENDPOINT = '/contact.php';
+// The site is hosted on Cloudflare Pages, which serves static files only and so
+// cannot run a handler of our own - submissions go to Web3Forms. The endpoint
+// and access key live on the <form> itself (action + a hidden input) so the
+// no-JS path keeps working and there is a single place to edit the key.
+const PLACEHOLDER_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
 
 /**
  * Initialize all forms on the page
@@ -14,7 +15,6 @@ const ENDPOINT = '/contact.php';
 export function initForms() {
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
-        stampRenderTime(contactForm);
         setupFormSubmission(contactForm);
         setupFormValidation(contactForm);
         showRedirectResult(contactForm);
@@ -38,14 +38,6 @@ function showRedirectResult(form) {
     window.history.replaceState({}, '', window.location.pathname);
 }
 
-/**
- * Record when the form became available. contact.php rejects submissions that
- * arrive implausibly fast, which filters most naive bots.
- */
-function stampRenderTime(form) {
-    const field = form.querySelector('input[name="started_at"]');
-    if (field) field.value = String(Date.now());
-}
 
 /**
  * Setup form submission handler
@@ -64,6 +56,15 @@ function setupFormSubmission(form) {
             return;
         }
 
+        // Fail loudly in the console rather than sending a request that is
+        // guaranteed to come back rejected.
+        const keyField = form.querySelector('input[name="access_key"]');
+        if (!keyField || !keyField.value || keyField.value === PLACEHOLDER_KEY) {
+            showStatus(statusDiv, 'Sorry, the form is unavailable right now. Please call +254 716 923 777 or email info@psml.ke.', 'error');
+            console.error('Contact form: Web3Forms access key is not set in contact.html.');
+            return;
+        }
+
         // Disable submit button
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.disabled = true;
@@ -72,20 +73,25 @@ function setupFormSubmission(form) {
         try {
             const formData = new FormData(form);
 
-            // The Accept header is what tells contact.php to answer with JSON
-            // instead of the redirect it serves to no-JS submissions.
-            const response = await fetch(ENDPOINT, {
+            // 'redirect' is only meaningful for a no-JS form post; leaving it in
+            // an AJAX request makes Web3Forms answer with a redirect instead of
+            // the JSON this handler expects.
+            formData.delete('redirect');
+            // Lets the recipient reply straight to the enquirer from the inbox.
+            const email = form.querySelector('[name="email"]');
+            if (email && email.value) formData.set('replyto', email.value);
+
+            const response = await fetch(form.action, {
                 method: 'POST',
-                headers: { 'Accept': 'application/json', 'X-Requested-With': 'fetch' },
+                headers: { 'Accept': 'application/json' },
                 body: formData
             });
 
             const data = await response.json();
 
             if (data.success) {
-                showStatus(statusDiv, data.message || 'Thank you! Your message has been sent.', 'success');
+                showStatus(statusDiv, 'Thank you! Your message has been sent. We will get back to you within 24 hours.', 'success');
                 form.reset();
-                stampRenderTime(form);   // reset the timing trap for a second enquiry
             } else {
                 showStatus(statusDiv, data.message || 'Oops! There was a problem submitting your form. Please try again.', 'error');
             }

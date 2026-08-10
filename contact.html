@@ -97,14 +97,27 @@
                     <p class="text-gray-600 mb-6">Fill out the form below and our team will get back to you within 24
                         hours.</p>
 
-                    <!-- action/method are set so the form still submits if JS is
-                         unavailable; form-handler.js intercepts it otherwise. -->
-                    <form id="contact-form" class="contact-form" action="/contact.php" method="post">
-                        <!-- Spam traps: a field humans never see, and the time the
-                             form was rendered. Both are checked in contact.php. -->
-                        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"
-                            class="form-hp">
-                        <input type="hidden" name="started_at" value="">
+                    <!-- Posts straight to Web3Forms. action/method are real, so the
+                         form still works with JavaScript disabled; form-handler.js
+                         intercepts it for the inline success/error experience.
+                         The site is on Cloudflare Pages, which serves static files
+                         only and cannot run a server-side handler of our own. -->
+                    <form id="contact-form" class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                        <!-- REPLACE THIS with the access key emailed by web3forms.com
+                             for info@psml.ke. The form cannot send until you do.
+                             A public key is expected here - it only permits
+                             submissions to this one form. -->
+                        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+                        <input type="hidden" name="subject" value="New enquiry from psml.ke">
+                        <input type="hidden" name="from_name" value="Palak Steel Mill Website">
+                        <!-- Only used for no-JS submissions; form-handler.js strips
+                             it so an AJAX post gets JSON back instead of a redirect. -->
+                        <input type="hidden" name="redirect" value="https://psml.ke/contact.html?sent=1">
+                        <!-- Web3Forms' honeypot: server-side rejects any submission
+                             where this is ticked. Hidden via .form-hp, not
+                             display:none, which some bots skip over. -->
+                        <input type="checkbox" name="botcheck" class="form-hp" tabindex="-1" autocomplete="off"
+                            aria-hidden="true">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="name" class="form-label">Full Name *</label>

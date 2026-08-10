@@ -114,9 +114,9 @@
     margin: 0;
 }
 
-/* Honeypot for contact.php. Deliberately not display:none - some bots skip
-   fields hidden that way, whereas this stays "present" while being invisible
-   and unreachable by keyboard or screen reader. */
+/* Hides the Web3Forms 'botcheck' honeypot. Deliberately not display:none - some
+   bots skip fields hidden that way, whereas this stays "present" while being
+   invisible and unreachable by keyboard or screen reader. */
 .form-hp {
     position: absolute;
     left: -9999px;
