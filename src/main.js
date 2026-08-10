@@ -10,7 +10,4 @@ import { initForms } from './scripts/form-handler.js';
 document.addEventListener('DOMContentLoaded', () => {
     initAll();
     initForms();
-
-    // Additional PSML-specific initializations can go here
-    console.log('PSML Website Loaded');
 });

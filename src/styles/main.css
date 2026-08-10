@@ -17,6 +17,126 @@
     --color-accent: #fbbf24;
     --color-accent-light: #fcd34d;
     --color-accent-dark: #f59e0b;
+
+    /* Straight off the supplied artwork: the field the badge sits on. Used for
+       the wordmark so the type belongs to the logo rather than to the page. */
+    --color-brand-navy: #070739;
+    --font-brand: 'Aldrich', 'Outfit', system-ui, sans-serif;
+
+    /* Fluid display sizes.
+
+       @palak/styles ships these as fixed rem values - 3.5rem/4.5rem - which
+       never shrink, so on a 320px phone .section-title rendered at 56px and
+       .page-title at 72px. Besides reading badly, a single long word then
+       exceeded its container: "Uncompromising" on the Quality page measured
+       ~420px inside a 278px box and pushed 53px of horizontal scroll onto the
+       document. clamp() keeps the desktop sizes identical (the max values are
+       the original tokens) while scaling down sensibly on small screens. */
+    --text-3xl: clamp(1.75rem, 1.15rem + 3vw, 2.5rem);
+    --text-4xl: clamp(2rem, 1.2rem + 4vw, 3.5rem);
+    --text-5xl: clamp(2.25rem, 1.3rem + 4.75vw, 4.5rem);
+    --text-6xl: clamp(2.5rem, 1.4rem + 5.5vw, 5.5rem);
+
+    /* .header is position:fixed and has no shrink-on-scroll, so its height is
+       constant: brand mark (4rem) + .nav padding (var(--space-4) x2) + 1px
+       border. Anything that has to clear the header derives from this. */
+    --header-height: 97px;
+}
+
+/* ============================================
+   BRAND MARK
+   ============================================ */
+
+/* The mark is a 512x421 navy chip, so it must size by height with width:auto -
+   a square box would squash it. These beat the .nav-brand img / .footer-brand
+   img rules in @palak/ui (0,2,0 over 0,1,1); the footer one in particular has a
+   margin-bottom meant for a stacked logo that would break the flex row here.
+
+   The badge sits at 78x64 beside a typeset wordmark. The ribbon lettering baked
+   into the artwork renders ~5.7px at this size and simply cannot be read - no
+   colour treatment fixes 6px type, and the source pairs pale cyan on navy, so
+   dropping the dark field would push "Reinforcing Kenya" from 10.9:1 down to
+   1.75:1 against white. The badge therefore keeps its dark field and stays a
+   mark, while .brand-name carries the name as real text: crisp at any size,
+   selectable, and indexable. .header is position:fixed, so --header-height
+   keeps every offset that clears it in sync with this value. */
+.nav-brand .logo-icon {
+    display: block;
+    height: 4rem;
+    width: auto;
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+}
+
+/* Aldrich is a squared techno face chosen to echo the badge ribbon's own
+   lettering - pointed A, squared S, chamfered terminals. A neutral bold sans
+   read as generic text sitting next to the logo rather than part of it. Set in
+   the logo's own navy for the same reason. */
+.brand-name {
+    font-family: var(--font-brand);
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-brand-navy);
+    white-space: nowrap;
+}
+
+/* Two-tone hairline: red for the first third, neutral for the rest. Gives the
+   lockup a baseline to sit on so the two lines read as one unit. */
+.brand-rule {
+    height: 2px;
+    margin: 0.4rem 0 0.35rem;
+    background: linear-gradient(90deg,
+            var(--color-primary) 0 34%,
+            var(--color-gray-300) 34%);
+}
+
+.brand-tagline {
+    font-family: var(--font-body);
+    font-size: 0.6875rem;
+    font-weight: var(--font-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+.footer-brand .logo-icon {
+    height: 2.75rem;
+    width: auto;
+    margin: 0;
+}
+
+/* Honeypot for contact.php. Deliberately not display:none - some bots skip
+   fields hidden that way, whereas this stays "present" while being invisible
+   and unreachable by keyboard or screen reader. */
+.form-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Safety net for the fluid scale above: headings are the one place a single
+   unbreakable word can still exceed a narrow container. Breaking is preferable
+   to a page that scrolls sideways. */
+h1,
+h2,
+h3,
+h4,
+.hero-title,
+.page-title,
+.section-title {
+    overflow-wrap: break-word;
 }
 
 /* ============================================
@@ -61,7 +181,7 @@
 }
 
 .hero-content {
-    padding-top: 100px;
+    padding-top: calc(var(--header-height) + var(--space-6));
 }
 
 .hero-label {
@@ -115,10 +235,26 @@
 }
 
 @media (max-width: 1024px) {
+
+    /* .hero is a flex row (@palak/ui). While .hero-stats is absolute that does
+       not matter, but returning it to flow here makes it a flex SIBLING of
+       .container - so it lined up beside the hero copy and shrink-wrapped
+       instead of stacking under it, hanging off the right edge (32px of
+       horizontal scroll at 320px). Wrapping the row and forcing both children
+       to full width puts it back underneath. */
+    .hero {
+        flex-wrap: wrap;
+    }
+
+    .hero>.container {
+        width: 100%;
+    }
+
     .hero-stats {
         position: relative;
         bottom: auto;
         right: auto;
+        width: 100%;
         margin-top: var(--space-12);
         justify-content: center;
         flex-wrap: wrap;
@@ -152,6 +288,50 @@
     box-shadow: var(--shadow-xl);
     object-fit: cover;
     aspect-ratio: 4/3;
+}
+
+/* Bento mosaic of mill photography, used in place of a single .about-img.
+   Two stacked columns rather than a 2x2 grid: the column totals match exactly
+   (1.0c + 0.75c either way, c = column width) so the block stays flush, while
+   the internal seams deliberately do NOT line up across columns. That gives the
+   stagger without a margin offset, which would have shifted .about-badge. */
+.about-mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.mosaic-col {
+    display: grid;
+    gap: var(--space-3);
+    align-content: start;
+}
+
+.mosaic-tile {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+}
+
+.mosaic-tile--square {
+    aspect-ratio: 1/1;
+}
+
+.mosaic-tile--wide {
+    aspect-ratio: 4/3;
+}
+
+.mosaic-tile img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+}
+
+.mosaic-tile:hover img {
+    transform: scale(1.06);
 }
 
 .image-placeholder {
@@ -215,6 +395,31 @@
 }
 
 @media (max-width: 768px) {
+    /* The header is fixed, so it costs viewport on every scroll. Shrink the
+       badge and wordmark together and redefine --header-height so everything
+       that clears the header follows it down. */
+    :root {
+        --header-height: 85px;
+    }
+
+    .nav-brand .logo-icon {
+        height: 3.25rem;
+    }
+
+    .brand-name {
+        font-size: 1.0625rem;
+        letter-spacing: 0.04em;
+    }
+
+    .brand-rule {
+        margin: 0.3rem 0 0.25rem;
+    }
+
+    .brand-tagline {
+        font-size: 0.625rem;
+        letter-spacing: 0.16em;
+    }
+
     .about-grid {
         grid-template-columns: 1fr;
         gap: var(--space-8);
@@ -232,6 +437,47 @@
 
     .badge-number {
         font-size: var(--text-2xl);
+    }
+}
+
+/* Scroll-reveal animations must not push content off-screen.
+
+   @palak/styles gives [data-animate="fade-right"] a standing translateX(30px)
+   (and fade-left -30px) that is only released once the element scrolls into
+   view. On desktop the container has side margin to absorb it, but on phones the
+   content already spans the viewport, so those 30px hang past the right edge and
+   the whole page scrolls sideways until you happen to scroll down. Measured
+   before this fix: 14px of horizontal scroll on the homepage, 25px on About,
+   135px on Quality where several stack.
+
+   Below the layout breakpoint the grids are single-column anyway, so a
+   left/right reveal is meaningless - reveal vertically instead. Overridden here
+   rather than in the shared package to keep the blast radius on this site. */
+@media (max-width: 768px) {
+
+    [data-animate="fade-left"],
+    [data-animate="fade-right"] {
+        transform: translateY(30px);
+    }
+
+    [data-animate="fade-left"].is-visible,
+    [data-animate="fade-right"].is-visible {
+        transform: translateY(0);
+    }
+}
+
+/* At 360px the wordmark left only 3px between the brand and the nav toggle, so
+   narrow phones get one more step down. Must stay after the 768px block: same
+   specificity, so source order decides. */
+@media (max-width: 420px) {
+    .brand-name {
+        font-size: 0.8125rem;
+        letter-spacing: 0.03em;
+    }
+
+    .brand-tagline {
+        font-size: 0.5625rem;
+        letter-spacing: 0.1em;
     }
 }
 
@@ -373,7 +619,7 @@
    ============================================ */
 
 section[id] {
-    scroll-margin-top: 100px;
+    scroll-margin-top: calc(var(--header-height) + var(--space-4));
 }
 
 /* ============================================
@@ -405,7 +651,7 @@ section[id] {
     background: linear-gradient(135deg, var(--color-gray-900) 0%, #1a1a2e 100%);
     padding: var(--space-32) 0 var(--space-16);
     text-align: center;
-    margin-top: 80px;
+    margin-top: var(--header-height);
 }
 
 .page-title {

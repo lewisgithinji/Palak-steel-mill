@@ -1,0 +1,86 @@
+# Palak Steel Mill - Apache / LiteSpeed configuration (DirectAdmin hosting)
+#
+# NOTE: public/_headers is a Netlify / Cloudflare Pages file and is INERT on this
+# host - Apache never reads it. This file is the one that actually takes effect.
+# Keep the two in sync if the site is ever moved to a Pages-style host.
+#
+# Lives in public/ so Vite copies it into dist/ on every build; upload the whole
+# contents of dist/ to public_html.
+
+# ----------------------------------------------------------------------
+# Custom error pages
+# ----------------------------------------------------------------------
+ErrorDocument 404 /404.html
+
+# ----------------------------------------------------------------------
+# Security headers
+# ----------------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=()"
+
+    # HSTS. Only meaningful once the site is served over HTTPS everywhere -
+    # 'preload' is a long-lived commitment covering every subdomain, so drop
+    # that token if any subdomain is still HTTP-only.
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+
+    # Fingerprinted build assets can be cached forever; Vite renames them on
+    # every content change.
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # HTML must always revalidate or visitors keep seeing a stale site.
+    <FilesMatch "\.html$">
+        Header set Cache-Control "public, max-age=0, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Caching for static media
+# ----------------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/webp                "access plus 1 year"
+    ExpiresByType image/png                 "access plus 1 year"
+    ExpiresByType image/jpeg                "access plus 1 year"
+    ExpiresByType image/svg+xml             "access plus 1 year"
+    ExpiresByType image/x-icon              "access plus 1 year"
+    ExpiresByType text/css                  "access plus 1 year"
+    ExpiresByType application/javascript    "access plus 1 year"
+    ExpiresByType text/html                 "access plus 0 seconds"
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Compression
+# ----------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+# WebP is not in the default MIME table on some older Apache builds; without
+# this the browser downloads the file instead of rendering it.
+<IfModule mod_mime.c>
+    AddType image/webp .webp
+</IfModule>
+
+# ----------------------------------------------------------------------
+# Canonical host: force HTTPS and a single www/non-www form so the pages do
+# not get indexed twice. Uncomment once the certificate is confirmed live.
+# ----------------------------------------------------------------------
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} off
+#     RewriteRule ^(.*)$ https://psml.ke/$1 [R=301,L]
+#     RewriteCond %{HTTP_HOST} ^www\.psml\.ke [NC]
+#     RewriteRule ^(.*)$ https://psml.ke/$1 [R=301,L]
+# </IfModule>
+
+# Block access to source-control and dotfiles if any ever get uploaded.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

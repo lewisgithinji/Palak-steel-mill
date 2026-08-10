@@ -14,6 +14,10 @@
   <meta property="og:description" content="Kenya's leading manufacturer of TMT rebars and steel reinforcement bars.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://psml.ke">
+  <meta property="og:image" content="https://psml.ke/images/psml-logo.webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://psml.ke/" />
 
   <script type="application/ld+json">
@@ -22,6 +26,7 @@
     "@type": "IndustrialBusiness",
     "name": "Palak Steel Mill Ltd",
     "image": "https://psml.ke/images/hero-bg.webp",
+    "logo": "https://psml.ke/images/psml-logo.webp",
     "url": "https://psml.ke",
     "telephone": "+254716923777",
     "email": "info@psml.ke",
@@ -40,13 +45,18 @@
   }
   </script>
 
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="/favicon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
   <title>Palak Steel Mill Ltd - Reinforcing Kenya</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Aldrich&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 
   <!-- Styles -->
@@ -59,14 +69,12 @@
     <div class="header-container">
       <nav class="nav">
         <a href="/" class="nav-brand">
-          <div class="logo-icon">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="8" fill="#dc2626" />
-              <path d="M10 12h6v16h-4V16h-2v-4zm8 0h6c3 0 5 2 5 5s-2 5-5 5h-2v6h-4V12zm4 6h2c1 0 1-1 1-1s0-1-1-1h-2v2z"
-                fill="white" />
-            </svg>
-          </div>
-          <span>PSML</span>
+          <img src="/images/psml-mark.webp" alt="" class="logo-icon" width="512" height="421" decoding="async">
+          <span class="brand-text">
+            <span class="brand-name">Palak Steel Mill Ltd</span>
+            <span class="brand-rule" aria-hidden="true"></span>
+            <span class="brand-tagline">Reinforcing Kenya</span>
+          </span>
         </a>
 
         <ul class="nav-menu">
@@ -90,7 +98,8 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-background">
-      <img src="/images/hero-bg.webp" alt="Steel manufacturing facility with molten steel" loading="eager">
+      <img src="/images/hero-bg.webp" alt="Steel manufacturing facility with molten steel" width="1024"
+        height="1024" loading="eager" fetchpriority="high" decoding="async">
       <div class="hero-overlay"></div>
     </div>
     <div class="container">
@@ -223,7 +232,32 @@
     <div class="container">
       <div class="about-grid">
         <div class="about-image" data-animate="fade-right">
-          <img src="/images/factory.webp" alt="PSML Steel Manufacturing Facility" class="about-img" loading="lazy">
+          <div class="about-mosaic">
+            <div class="mosaic-col">
+              <figure class="mosaic-tile mosaic-tile--square">
+                <img src="/images/mill-quench.webp"
+                  alt="Water quenching a red-hot steel bar on the PSML rolling line" width="560" height="560"
+                  loading="lazy" decoding="async">
+              </figure>
+              <figure class="mosaic-tile mosaic-tile--wide">
+                <img src="/images/mill-cooling-bed.webp"
+                  alt="Twin glowing steel bars running out along the PSML cooling bed" width="560" height="420"
+                  loading="lazy" decoding="async">
+              </figure>
+            </div>
+            <div class="mosaic-col">
+              <figure class="mosaic-tile mosaic-tile--wide">
+                <img src="/images/mill-rolling-stand.webp"
+                  alt="Hot steel bar passing through a rolling stand at the PSML mill" width="560" height="420"
+                  loading="lazy" decoding="async">
+              </figure>
+              <figure class="mosaic-tile mosaic-tile--square">
+                <img src="/images/mill-melt-shop.webp"
+                  alt="Ladle pouring molten steel in the PSML melt shop" width="560" height="560" loading="lazy"
+                  decoding="async">
+              </figure>
+            </div>
+          </div>
           <div class="about-badge">
             <span class="badge-number">25+</span>
             <span class="badge-text">Years of Excellence</span>
@@ -259,7 +293,9 @@
       <div class="products-grid">
         <div class="product-card hover-lift" data-animate="fade-up">
           <div class="product-image">
-            <img src="/images/tmt-rebars.webp" alt="High-quality TMT Rebars" loading="lazy">
+            <img src="/images/tmt-rebars.webp"
+              alt="Coiled PALAK 12 B500 TMT rebars with the Palak brand rolled into the bar" width="640" height="480"
+              loading="lazy" decoding="async">
           </div>
           <div class="product-info">
             <h3 class="product-title">TMT Rebars</h3>
@@ -276,7 +312,8 @@
 
         <div class="product-card" data-animate="fade-up" style="animation-delay: 100ms;">
           <div class="product-image">
-            <img src="/images/construction.webp" alt="Construction site using steel bars" loading="lazy">
+            <img src="/images/construction.webp" alt="Construction site using PSML steel reinforcement bars" width="1024"
+              height="576" loading="lazy" decoding="async">
           </div>
           <div class="product-info">
             <h3 class="product-title">Merchant Bars</h3>
@@ -319,14 +356,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="nav-brand" style="color: white; margin-bottom: var(--space-4);">
-            <div class="logo-icon">
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="40" height="40" rx="8" fill="#dc2626" />
-                <path
-                  d="M10 12h6v16h-4V16h-2v-4zm8 0h6c3 0 5 2 5 5s-2 5-5 5h-2v6h-4V12zm4 6h2c1 0 1-1 1-1s0-1-1-1h-2v2z"
-                  fill="white" />
-              </svg>
-            </div>
+            <img src="/images/psml-mark.webp" alt="" class="logo-icon" width="512" height="421" decoding="async">
             <span>Palak Steel Mill Ltd</span>
           </div>
           <p>Building the nation with the right mix of strength and flexibility. Kenya's leading manufacturer of TMT

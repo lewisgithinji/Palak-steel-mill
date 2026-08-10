@@ -3,11 +3,10 @@
  * Handles contact form submissions with validation and Web3Forms integration
  */
 
-// Web3Forms API endpoint
-const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
-
-// Web3Forms Access Key - REPLACE WITH YOUR KEY for info@psml.ke
-const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY_HERE';
+// Posts to our own PHP handler (public/contact.php) rather than a third-party
+// form service: the site runs on PHP and info@psml.ke is a mailbox on the same
+// server, so there is no submission cap and no public API key to leak.
+const ENDPOINT = '/contact.php';
 
 /**
  * Initialize all forms on the page
@@ -15,9 +14,37 @@ const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY_HERE';
 export function initForms() {
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
+        stampRenderTime(contactForm);
         setupFormSubmission(contactForm);
         setupFormValidation(contactForm);
+        showRedirectResult(contactForm);
     }
+}
+
+/**
+ * A no-JS submission lands back here as /contact.html?sent=1|0. Surface that as
+ * the same status banner a fetch() submission would produce, then drop the
+ * parameter so a refresh does not repeat the message.
+ */
+function showRedirectResult(form) {
+    const sent = new URLSearchParams(window.location.search).get('sent');
+    if (sent === null) return;
+    const statusDiv = getOrCreateStatusDiv(form);
+    if (sent === '1') {
+        showStatus(statusDiv, 'Thank you! Your message has been sent. We will get back to you within 24 hours.', 'success');
+    } else {
+        showStatus(statusDiv, 'Sorry, we could not send your message. Please call +254 716 923 777 or email info@psml.ke.', 'error');
+    }
+    window.history.replaceState({}, '', window.location.pathname);
+}
+
+/**
+ * Record when the form became available. contact.php rejects submissions that
+ * arrive implausibly fast, which filters most naive bots.
+ */
+function stampRenderTime(form) {
+    const field = form.querySelector('input[name="started_at"]');
+    if (field) field.value = String(Date.now());
 }
 
 /**
@@ -43,26 +70,22 @@ function setupFormSubmission(form) {
         submitBtn.textContent = 'Sending...';
 
         try {
-            // Prepare form data
             const formData = new FormData(form);
 
-            // Add Web3Forms required fields
-            formData.append('access_key', WEB3FORMS_ACCESS_KEY);
-            formData.append('subject', 'New Contact Form Submission - Palak Steel Mill');
-            formData.append('from_name', 'Palak Steel Mill Website');
-            formData.append('redirect', 'false');
-
-            // Send to Web3Forms
-            const response = await fetch(WEB3FORMS_ENDPOINT, {
+            // The Accept header is what tells contact.php to answer with JSON
+            // instead of the redirect it serves to no-JS submissions.
+            const response = await fetch(ENDPOINT, {
                 method: 'POST',
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'fetch' },
                 body: formData
             });
 
             const data = await response.json();
 
             if (data.success) {
-                showStatus(statusDiv, 'Thank you! Your message has been sent successfully.', 'success');
+                showStatus(statusDiv, data.message || 'Thank you! Your message has been sent.', 'success');
                 form.reset();
+                stampRenderTime(form);   // reset the timing trap for a second enquiry
             } else {
                 showStatus(statusDiv, data.message || 'Oops! There was a problem submitting your form. Please try again.', 'error');
             }
