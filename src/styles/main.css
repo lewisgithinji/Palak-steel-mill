@@ -114,6 +114,30 @@
     margin: 0;
 }
 
+/* Keyboard users land on this before anything else and can jump past the nav.
+   Off-screen until focused rather than display:none, so it stays reachable. */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: calc(var(--z-fixed) + 10);
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-brand-navy);
+    color: var(--color-white);
+    font-weight: var(--font-semibold);
+    text-decoration: none;
+    border-radius: 0 0 var(--radius-md) 0;
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+/* The header is fixed, so an anchor jump would otherwise land under it. */
+#main {
+    scroll-margin-top: var(--header-height);
+}
+
 /* Hides the Web3Forms 'botcheck' honeypot. Deliberately not display:none - some
    bots skip fields hidden that way, whereas this stays "present" while being
    invisible and unreachable by keyboard or screen reader. */

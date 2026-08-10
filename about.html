@@ -5,28 +5,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Learn about Palak Steel Mill Ltd - Kenya's leading manufacturer of TMT rebars with 25+ years of experience.">
+        content="Palak Steel Mill Ltd has manufactured TMT rebars in Kenya since 1999. Learn about our mill, our people and our commitment to safe, sustainable steel.">
     <!-- Favicons -->
     <link rel="icon" href="/favicon-32.png" sizes="32x32">
     <link rel="icon" href="/favicon-192.png" sizes="192x192">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
-    <title>About Us - Palak Steel Mill Ltd</title>
-    <link rel="canonical" href="https://psml.ke/about.html" />
+    <link rel="manifest" href="/site.webmanifest">
+    <!-- Canonical & social -->
+    <link rel="canonical" href="https://psml.ke/about">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Palak Steel Mill Ltd">
+    <meta property="og:locale" content="en_KE">
+    <meta property="og:url" content="https://psml.ke/about">
+    <meta property="og:title" content="About Palak Steel Mill | TMT Rebar Maker Since 1999">
+    <meta property="og:description" content="Palak Steel Mill Ltd has manufactured TMT rebars in Kenya since 1999. Learn about our mill, our people and our commitment to safe, sustainable steel.">
+    <meta property="og:image" content="https://psml.ke/images/psml-logo.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Palak Steel Mill Ltd - Reinforcing Kenya">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About Palak Steel Mill | TMT Rebar Maker Since 1999">
+    <meta name="twitter:description" content="Palak Steel Mill Ltd has manufactured TMT rebars in Kenya since 1999. Learn about our mill, our people and our commitment to safe, sustainable steel.">
+    <meta name="twitter:image" content="https://psml.ke/images/psml-logo.webp">
+    <meta name="theme-color" content="#070739">
 
+    <title>About Palak Steel Mill | TMT Rebar Maker Since 1999</title>
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "AboutPage",
-      "mainEntity": {
-        "@type": "IndustrialBusiness",
-        "name": "Palak Steel Mill Ltd",
-        "foundingDate": "1999",
-        "description": "PSML is a privately-owned steel manufacturing company committed to sustainable, safe, and self-sufficient steel production in Kenya."
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "AboutPage",
+            "@id": "https://psml.ke/about#webpage",
+            "url": "https://psml.ke/about",
+            "name": "About Palak Steel Mill Ltd",
+            "description": "The story, mission and manufacturing capability of Palak Steel Mill Ltd, a Kenyan steel producer established in 1999.",
+            "isPartOf": {
+              "@id": "https://psml.ke/#website"
+            },
+            "about": {
+              "@id": "https://psml.ke/#organization"
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://psml.ke/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "About Us",
+                "item": "https://psml.ke/about"
+              }
+            ]
+          }
+        ]
       }
-    }
     </script>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -36,6 +77,7 @@
 </head>
 
 <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
     <!-- Header -->
     <header class="header">
         <div class="header-container">
@@ -51,11 +93,11 @@
 
                 <ul class="nav-menu">
                     <li><a href="/" class="nav-link">Home</a></li>
-                    <li><a href="/about.html" class="nav-link active">About Us</a></li>
-                    <li><a href="/products.html" class="nav-link">Products</a></li>
-                    <li><a href="/quality.html" class="nav-link">Quality</a></li>
-                    <li><a href="/contact.html" class="nav-link">Contact</a></li>
-                    <li><a href="/contact.html" class="btn btn-primary btn-sm">Get a Quote</a></li>
+                    <li><a href="/about" class="nav-link active">About Us</a></li>
+                    <li><a href="/products" class="nav-link">Products</a></li>
+                    <li><a href="/quality" class="nav-link">Quality</a></li>
+                    <li><a href="/contact" class="nav-link">Contact</a></li>
+                    <li><a href="/contact" class="btn btn-primary btn-sm">Get a Quote</a></li>
                 </ul>
 
                 <button class="nav-toggle" aria-label="Toggle navigation">
@@ -67,6 +109,8 @@
         </div>
     </header>
 
+
+    <main id="main">
     <!-- Page Header -->
     <section class="page-hero page-hero-bg">
         <div class="page-hero-image">
@@ -187,12 +231,13 @@
             <p class="cta-text" data-animate="fade-up">Join thousands of satisfied customers who trust PSML for their
                 construction needs.</p>
             <div class="cta-actions" data-animate="fade-up">
-                <a href="/contact.html" class="btn btn-white btn-lg">Contact Us</a>
+                <a href="/contact" class="btn btn-white btn-lg">Contact Us</a>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
+    </main>
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -205,25 +250,25 @@
                 </div>
 
                 <div class="footer-column">
-                    <h4 class="footer-title">Quick Links</h4>
+                    <h3 class="footer-title">Quick Links</h3>
                     <ul class="footer-links">
                         <li><a href="/">Home</a></li>
-                        <li><a href="/about.html">About Us</a></li>
-                        <li><a href="/products.html">Products</a></li>
-                        <li><a href="/contact.html">Contact</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/products">Products</a></li>
+                        <li><a href="/contact">Contact</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-column">
-                    <h4 class="footer-title">Products</h4>
+                    <h3 class="footer-title">Products</h3>
                     <ul class="footer-links">
-                        <li><a href="/products.html">TMT Rebars</a></li>
-                        <li><a href="/products.html">Merchant Bars</a></li>
+                        <li><a href="/products">TMT Rebars</a></li>
+                        <li><a href="/products">Merchant Bars</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-column">
-                    <h4 class="footer-title">Contact</h4>
+                    <h3 class="footer-title">Contact</h3>
                     <ul class="footer-links">
                         <li><a href="tel:+254716923777">+254 716 923 777</a></li>
                         <li><a href="mailto:info@psml.ke">info@psml.ke</a></li>

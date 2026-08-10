@@ -142,6 +142,14 @@ def build_logo():
             os.path.join(PUB, name), format="PNG", optimize=True)
         report(os.path.join(PUB, name))
 
+    # Manifest icon for install prompts and splash screens. Deliberately opaque
+    # and palette-quantised: it is declared 'maskable', so the OS crops it to its
+    # own shape and transparent corners would only produce ragged edges. Keeping
+    # alpha here also cost 243KB versus ~40KB.
+    fit(square, 512, 512).convert("RGB").quantize(colors=256, method=Image.MEDIANCUT).save(
+        os.path.join(PUB, "favicon-512.png"), format="PNG", optimize=True)
+    report(os.path.join(PUB, "favicon-512.png"), "manifest / maskable, no alpha")
+
     # Browsers, crawlers and bookmark tools still probe /favicon.ico at the root
     # regardless of the <link rel="icon"> tags, and it 404s without this.
     rounded(fit(square, 64, 64)).save(
