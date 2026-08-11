@@ -52,7 +52,7 @@ PHOTOS = [
     ("mill-quench.webp",        "mill4", (0, 250, 685,  935), (560, 560), 1.00, 1.05, 1.12),
     # about.html facility slot - a different window on mill2 so it does not echo
     # the mosaic tile. Ships at native width; there is no headroom to upscale.
-    ("factory-interior.webp",   "mill2", (0, 260, 685,  774), (685, 514), 0.88, 1.08, 1.12),
+    ("mill-floor.webp",         "mill2", (0, 260, 685,  774), (685, 514), 0.88, 1.08, 1.12),
 ]
 
 MILL2_SAFE_BOTTOM = 1076  # below this, mill2's video player overlays begin
@@ -72,7 +72,7 @@ MILL2_SAFE_BOTTOM = 1076  # below this, mill2's video player overlays begin
 # a slight cool cast (B 99.5 vs R 95.4) that reads blue rather than like steel.
 PRODUCTS = [
     # output,             src,          crop,                 out w,h,   gamma, contrast, saturation, warm
-    ("tmt-rebars.webp",   "tmt-palak",  (0, 120, 640, 600), (640, 480), 0.88, 1.10, 0.94, 4),
+    ("tmt-rebars-palak.webp", "tmt-palak",  (0, 120, 640, 600), (640, 480), 0.88, 1.10, 0.94, 4),
 ]
 
 

@@ -5,8 +5,22 @@
   Permissions-Policy: geolocation=(self), microphone=(), camera=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   
+# Vite content-hashes these filenames, so a change always produces a new URL.
+# 'immutable' is genuinely true here.
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# NOT immutable. These live in public/ with stable, hand-written filenames, so
+# replacing a photo reuses the same URL. 'immutable' told browsers and the CDN
+# the bytes at that URL would never change, and they honoured it: five images
+# kept serving their old versions for a week after being replaced, including the
+# product shot. One day of caching, then revalidate - still fast on repeat
+# visits, but a swapped photo goes live within a day instead of within a year.
 /images/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/favicon-*
+  Cache-Control: public, max-age=604800
+
+/site.webmanifest
+  Cache-Control: public, max-age=604800
