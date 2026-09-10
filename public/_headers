@@ -4,6 +4,8 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(self), microphone=(), camera=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # Baseline CSP: framing, <base> and plugins only (script sources not restricted yet).
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
   
 # Vite content-hashes these filenames, so a change always produces a new URL.
 # 'immutable' is genuinely true here.
